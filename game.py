@@ -23,6 +23,7 @@ who played all of his or her pieces is awarded a +20 point bonus if the last
 piece played was a monomino, or a +15 point bonus for any other piece.
 """
 BOARD_SIZE = 20
+EMPTY_SQUARE = ' '
 
 BLUE = 'blue'
 YELLOW = 'yellow'
@@ -94,7 +95,7 @@ class Piece(object):
 class Board(object):
   def __init__(self, board_size):
     self.board_size = board_size
-    self.board = [['' for i in range(board_size)] for j in range(board_size)]
+    self.board = [[EMPTY_SQUARE for i in range(board_size)] for j in range(board_size)]
 
   def __repr__(self):
     ret = ''
@@ -108,9 +109,25 @@ class Board(object):
       ret += str(row) + '\n'
     return ret
 
+  def place(self, piece, x, y):
+    # Place piece at position x, y
+    # idea: x and y represent the top left position of the piece they want to add
+    j = y
+    for row in piece.grid:
+      i = x
+      for blip in row:
+        self.board[i][j] = piece.get_color() if blip else EMPTY_SQUARE
+        i += 1
+      j += 1
+
+
 
 board = Board(BOARD_SIZE)
 print(board)
 for p in PIECES:
   piece = Piece(GREEN, p)
   print(piece)
+
+cross_piece = Piece(GREEN, PENTOMINO_CROSS)
+board.place(cross_piece, 0, 0)
+print(board)
