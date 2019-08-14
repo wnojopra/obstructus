@@ -91,6 +91,14 @@ class Piece(object):
       ret += c_row + '\n'
     return ret
 
+  def rotate(self):
+    # 90 degree clockwise
+    rotated = zip(*self.grid[::-1])
+    self.grid = [list(t) for t in rotated]
+
+  def flip(self):
+    # About the y-axis
+    self.grid = [row[::-1] for row in self.grid]
 
 class Board(object):
   def __init__(self, board_size):
@@ -126,8 +134,21 @@ board = Board(BOARD_SIZE)
 print(board)
 for p in PIECES:
   piece = Piece(GREEN, p)
-  print(piece)
+  for i in range(2):
+    print(piece)
+    piece.flip()
 
-cross_piece = Piece(GREEN, PENTOMINO_CROSS)
-board.place(cross_piece, 0, 0)
+for p in PIECES:
+  piece = Piece(GREEN, p)
+  for i in range(4):
+    print(piece)
+    piece.rotate()
+
+z_piece = Piece(GREEN, TETROMINO_Z)
+z_piece.rotate()
+board.place(z_piece, 0, 0)
+z_piece.rotate()
+board.place(z_piece, 3, 1)
+z_piece.flip()
+board.place(z_piece, 7, 1)
 print(board)
